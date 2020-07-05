@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="{{home}}">
+					<em class="fa fa-home"></em>
+				</a></li>
+				<li class="active">Create Node</li>
+			</ol>
+		</div><!--/.row-->
+
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">Create Relation</h1>
+			</div>
+		</div><!--/.row-->
+		{% if error %}
+			<h4>{{error}}</h4>
+		{%endif%}
+		<div class='col-md-12'>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Add Relation
+					<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+				<div class="panel-body">
+						<form class="form-inline" method="POST" action="{{home}}relaction/create/0/{{source}}">{% csrf_token %}
+							<div class="form-group">
+								<label for="source">{{source}} -- </label>
+								<input type="hidden" class="form-control" name="source" value={{source}} id="source">
+							</div>
+							<div class="form-group">
+								{%if relfield%}
+									<input type="text" class="form-control" name="relation" value='' id="relation">
+								{%else%}
+								<label for="source">{{relation}}</label>
+								<input type="hidden" class="form-control" name="relation" value={{relation}} id="source">
+								{%endif%}
+							</div>
+							<div class="form-group">
+								<label for="source"> --  </label>
+
+									<select class="form-control js-search"  name="destination[]" id="destination" multiple="multiple" required>
+
+											{% for lab in lablist%}
+											<option value="{{lab.0}}">{{lab.1}}</option>
+											{%endfor%}
+									</select>
+
+							</div>
+							<input type="hidden" class="form-control" name="direction" value='{{direction}}' id="source">
+							<button type="submit" class="btn btn-primary">Add</button>
+						</form>
+				</div>
+			</div>
+		</div>
+		<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+		<script>
+		$(document).ready(function() {
+    $('.js-search').select2();
+});
+		</script>
+
+	</div>	<!--/.main-->
+	{% endblock content %}

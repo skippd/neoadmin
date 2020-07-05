@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+<style>
+code {
+  font-family: Consolas,"courier new";
+  color: crimson;
+  background-color: #f1f1f1;
+  padding: 2px;
+  font-size: 105%;
+}
+</style>
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="{{home}}">
+					<em class="fa fa-home"></em>
+				</a></li>
+				<li class="active">Node / Info</li>
+			</ol>
+		</div><!--/.row-->
+
+		<div class="row">
+			<div class="col-lg-12">
+				<h2 class="page-header"><strong>{{label}}</strong> , ID - {{id}} || <button class="btn btn-default" onclick="toggleinfo()">Show All Properties</button></h2>
+
+			</div>
+		</div><!--/.row-->
+		<div class="row">
+			<div class="col-lg-12">
+        <a href='{{home}}nodeedit/{{id}}'><button class="btn btn-primary">Edit</button></a>
+        <a href='{{home}}relaction/deleteall/0/{{id}}'><button class="btn btn-info">Delete All relations</button></a>
+        <a href='{{home}}relaction/deletenode/0/{{id}}'><button class="btn btn-danger">Delete Node</button></a>
+        <br>
+				<code id="nodeinfo" style="display: none;">{{nodeinfo}}</code>
+
+			</div>
+		</div>
+    <br>
+    <h3 style="margn-top:0px;"><strong>Add Relation</strong> </h3>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+    			<div class="panel-heading">
+    				Add Outbound Relation
+    				<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-down"></em></span></div>
+    			<div class="panel-body" style="display: none;">
+              <form class="form-inline" method="POST" action="{{home}}relaction/createpage/0/{{id}}">{% csrf_token %}
+                <div class="form-group">
+                  <label for="source">{{label}} -- </label>
+                  <input type="hidden" class="form-control" name="source" value="{{id}}" id="source">
+                </div>
+                <div class="form-group">
+                  <select class="form-control" id="relation" name="relation" required>
+                      <option selected="true" value="NewRelation"><strong>New Relation</strong></option>
+                      {% for rel in relist%}
+                      <option value="{{rel}}">{{rel}}</option>
+                      {%endfor%}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="source"> -- > </label>
+                  <select class="form-control"  name="destination" id="destination" required>
+                      <option selected="true" disabled="disabled">Label</option>
+                      {% for lab in lablist%}
+                      <option value="{{lab}}">{{lab}}</option>
+                      {%endfor%}
+                  </select>
+                </div>
+                <input type="hidden" class="form-control" name="direction" value="ltr" id="source">
+                <button type="submit" class="btn btn-primary">Add</button>
+              </form>
+    			</div>
+    		</div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+    			<div class="panel-heading">
+    				Add Inbound Relation
+    				<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-down"></em></span></div>
+    			<div class="panel-body" style="display: none;">
+            <form class="form-inline" method="POST" action="{{home}}relaction/createpage/0/{{id}}">{% csrf_token %}
+              <div class="form-group">
+
+                <select class="form-control"  name="destination" id="destination" required>
+                    <option selected="true" disabled="disabled">Label</option>
+                    {% for lab in lablist%}
+                    <option value="{{lab}}">{{lab}}</option>
+                    {%endfor%}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="source"> -- </label>
+                <select class="form-control" id="relation" name="relation" required>
+                    <option selected="true" value="NewRelation"><strong>New Relation</strong></option>
+                    {% for rel in relist%}
+                    <option value="{{rel}}">{{rel}}</option>
+                    {%endfor%}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="destination"> -- > {{label}}</label>
+                <input type="hidden" class="form-control" name="source" value="{{id}}" id="source">
+              </div>
+              <input type="hidden" class="form-control" name="direction" value="rtl" id="source">
+              <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+    			</div>
+    		</div>
+      </div>
+		</div>
+
+
+		<h3 style="margn-top:0px;"><strong>Existing Relations</strong> </h3>
+		{% for i in relations %}
+		<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{{i.name}}
+				<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+			<div class="panel-body">
+				<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Node</th>
+								<th scope="col">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{%for k in i.items%}
+							<tr>
+								<td>{{k.0}}</td>
+								<td><a href='{{home}}node/{{k.2}}' target='_blank'>{{k.1}}</a></td>
+								<td><a href={{home}}relaction/delete/{{k.0}}/{{id}}><button class='btn btn-danger'>Delete</button></a></td>
+							</tr>
+							{%endfor%}
+						</tbody>
+					</table>
+			</div>
+		</div>
+	</div>
+		{%endfor%}
+
+    <script>
+    function toggleinfo() {
+      var x = document.getElementById("nodeinfo");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+        }
+      else {
+        x.style.display = "none";
+      }
+    }
+    </script>
+
+
+	</div>	<!--/.main-->
+	{% endblock content %}

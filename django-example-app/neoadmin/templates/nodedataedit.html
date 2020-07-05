@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+  <div class="row">
+    <ol class="breadcrumb">
+      <li><a href="{{home}}">
+        <em class="fa fa-home"></em>
+      </a></li>
+      <li class="active">Node / EditData</li>
+    </ol>
+  </div>
+  <div class="row text-center">
+    <div class="col-lg-6 col-md-6 col-md-offset-3 col-lg-offset-3">
+      <h1 class="page-header"><strong>{{label}}</strong> , ID - {{id}}</h1>
+    </div>
+  </div>
+  <div class="row text-center">
+      <h4>{{error}}</h4>
+  </div>
+  <div class='col-md-12 col-lg-12 col-sm-12'>
+    <div id="output" style="margin-left: 20%;"></div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-md-offset-3 col-lg-offset-3 text-center">
+      <form  method="post" action='{{home}}nodeedit/{{id}}' onsubmit="return makeinp();">{% csrf_token %}
+       <input type="hidden" id="datainp" name="datastr" value="0"  />
+       <button type="submit" name="Submit" value="Continue" class="btn btn-primary">Update Node</button>
+       <!-- <button type="submit" name="Submit" value="Continue" />          -->
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  var etr = '';
+function makeinp(){
+	var data = etr.getData();
+		var ufields = {};
+		for (var key in data) {
+		    if (data.hasOwnProperty(key)) {
+		        console.log(key + " -> " + data[key]);
+						if (typeof data[key] == 'object'){
+							var ar = Object.keys(data[key]).map(function(key1) {
+									if (typeof data[key][key1] == 'object'){
+										alert("You cannot have nested objects");
+										throw "You cannot have nested objects";
+										return
+									}
+								  return data[key][key1];
+								});
+								ufields[key]=ar
+						}
+						else{
+							ufields[key]=data[key]
+						}
+
+		    }
+		}
+    document.getElementById("datainp").value = JSON.stringify(ufields);
+
+	console.log(ufields);
+  return true
+}
+</script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="{% static 'css/editor.css' %}" rel="stylesheet">
+<script src="{% static 'js/editor.js' %}"></script>
+
+
+<script>
+
+$(document).ready(function(){
+	// var data = '{"first_key":"one","second_key":"two","fourth_key":[1,2,3,4,5],"fifth_key":"zdkcjbn  sdvksbjk  skevbjs sdkvjbsdkv"}';
+  var data = '{{nodeinfo | safe }}'
+	etr =  JSONedtr( data, '#output' );
+})
+</script>
+
+
+{% endblock content %}

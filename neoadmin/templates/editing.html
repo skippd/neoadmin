@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="{{home}}">
+					<em class="fa fa-home"></em>
+				</a></li>
+				<li class="active">Node/Edit</li>
+			</ol>
+		</div><!--/.row-->
+
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">{{label}}</h1>
+			</div>
+		</div><!--/.row-->
+
+		<div class="panel panel-container">
+			<div class="row">
+
+				<div class='col-md-10 col-md-offset-1'>
+				<table class="table" id="labtable">
+					  <thead>
+					    <tr>
+					      <th scope="col">Name</th>
+					      <th scope="col">ID</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+							{%for i in labels%}
+					    <tr>
+					      <th scope="row">{{i.0}}</th>
+					      <td>{{i.1}}</td>
+					    </tr>
+					    {%endfor%}
+					  </tbody>
+					</table>
+				</div>
+
+			</div><!--/.row-->
+		</div>
+
+
+		<script>
+		$(document).ready(function() {
+		    $('#labtable').DataTable();
+		} );
+		</script>
+
+
+	</div>	<!--/.main-->
+	{% endblock content %}

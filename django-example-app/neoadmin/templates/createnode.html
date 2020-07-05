@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+  <div class="row">
+    <ol class="breadcrumb">
+      <li><a href="{{home}}">
+        <em class="fa fa-home"></em>
+      </a></li>
+      <li class="active">Create Node</li>
+    </ol>
+  </div>
+  <div class="row text-center">
+      <h4>{{error}}</h4>
+  </div>
+
+  <div class='col-md-8 col-lg-8 col-sm-8 col-md-offset-1 col-lg-offset-1'>
+    <div id="output" style="margin-left: 20%;"></div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-lg-8 col-md-8 col-md-offset-2 col-lg-offset-2 text-center">
+      <form  method="post" action='{{home}}createnode' onsubmit="return makeinp();">{% csrf_token %}
+       <input type="hidden" id="datainp" name="datastr" value="0"  />
+       <select class="form-control col-md-12" name="label" id="label" style="margin-bottom:5px;" required>
+           {% for lab in lablist%}
+           <option value="{{lab.0}}">{{lab.0}}</option>
+           {%endfor%}
+       </select>
+       <button type="submit" name="Submit" value="Continue" class="btn btn-primary">Create Node Node</button>
+       <!-- <button type="submit" name="Submit" value="Continue" />          -->
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  var etr = '';
+function makeinp(){
+	var data = etr.getData();
+		var ufields = {};
+		for (var key in data) {
+		    if (data.hasOwnProperty(key)) {
+		        console.log(key + " -> " + data[key]);
+						if (typeof data[key] == 'object'){
+							var ar = Object.keys(data[key]).map(function(key1) {
+									if (typeof data[key][key1] == 'object'){
+										alert("You cannot have nested objects");
+										throw "You cannot have nested objects";
+										return
+									}
+								  return data[key][key1];
+								});
+								ufields[key]=ar
+						}
+						else{
+							ufields[key]=data[key]
+						}
+
+		    }
+		}
+    document.getElementById("datainp").value = JSON.stringify(ufields);
+
+	console.log(ufields);
+  return true
+}
+</script>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="{% static 'css/editor.css' %}" rel="stylesheet">
+<script src="{% static 'js/editor.js' %}"></script>
+
+<script>
+
+$(document).ready(function(){
+	var data = '{"name":"Test name","property1":"something","list1":["item1","item2","item3"],"list2":["item1","item2","item3"]}';
+	etr =  JSONedtr( data, '#output' );
+})
+</script>
+
+
+{% endblock content %}

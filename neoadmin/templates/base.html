@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Neo Dashboard</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css" rel="stylesheet">
+	<link href="{% static 'css/custom.css' %}" rel="stylesheet">
+
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+	<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span></button>
+				<a class="navbar-brand" href="{{home}}"><strong>Neo Admin</strong></a>
+
+			</div>
+		</div>
+	</nav>
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-sidebar">
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name" style="color:white;">Navigation</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="divider"></div>
+		<ul class="nav menu">
+			<li ><a href="{{home}}"><em class="fa fa-dashboard">&nbsp;</em>Dashboard</a></li>
+			<li><a href="{{home}}search"><em class="fa fa-search">&nbsp;</em>Node Search</a></li>
+			<li><a href="{{home}}createnode"><em class="fa fa-plus">&nbsp;</em>Create Node</a></li>
+			<li><a href="/admin"><em class="fa fa-power-off">&nbsp;</em> Admin Page</a></li>
+		</ul>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.1/Chart.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
+
+		{% block content %}
+		{% endblock content %}
+
+	<script>
+	!function ($) {
+	    $(document).on("click","ul.nav li.parent > a ", function(){
+	        $(this).find('em').toggleClass("fa-minus");
+	    });
+	    $(".sidebar span.icon").find('em:first').addClass("fa-plus");
+	}
+
+		(window.jQuery);
+			$(window).on('resize', function () {
+		  if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+		})
+		$(window).on('resize', function () {
+		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+		})
+
+		$(document).on('click', '.panel-heading span.clickable', function(e){
+		    var $this = $(this);
+			if(!$this.hasClass('panel-collapsed')) {
+				$this.parents('.panel').find('.panel-body').slideUp();
+				$this.addClass('panel-collapsed');
+				$this.find('em').removeClass('fa-toggle-up').addClass('fa-toggle-down');
+			} else {
+				$this.parents('.panel').find('.panel-body').slideDown();
+				$this.removeClass('panel-collapsed');
+				$this.find('em').removeClass('fa-toggle-down').addClass('fa-toggle-up');
+			}
+		})
+
+		</script>
+
+		<script>
+			window.onload = function () {
+		var chart1 = document.getElementById("line-chart").getContext("2d");
+		window.myLine = new Chart(chart1).Line(lineChartData, {
+		responsive: true,
+		scaleLineColor: "rgba(0,0,0,.2)",
+		scaleGridLineColor: "rgba(0,0,0,.05)",
+		scaleFontColor: "#c5c7cc"
+		});
+	};
+	</script>
+
+</body>
+</html>
