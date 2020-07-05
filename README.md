@@ -102,4 +102,9 @@ Usage
   NEOADMIN_HOME = '/neoadmin/'
   ```
 
-  That's it, now got to the entry point after starting the apllication and you can see the dashboard
+  That's it, now got to the entry point after starting the application and you can see the dashboard
+
+Backlinks
+================
+- [Neomodel](https://github.com/neo4j-contrib/neomodel)
+- [Json Editor](https://github.com/LorincJuraj/JSONedtr)
