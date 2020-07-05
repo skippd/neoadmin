@@ -10,7 +10,7 @@ Homepage
 ![Homepage](/readmeimages/dashboard.PNG)
 
 Node creation page
-![Node Creation](/images/Createnode.PNG)
+![Node Creation](/readmeimages/Createnode.PNG)
 
 ### Functions Available
 
@@ -22,7 +22,8 @@ Node creation page
 * Delete Relations
 * Scrub through all nodes in a label
 
-## Usage
+Usage
+============
 
 ### Running Django Example app
 
